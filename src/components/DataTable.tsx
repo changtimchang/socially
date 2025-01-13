@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import * as React from "react"
+import * as React from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,21 +12,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+} from '@tanstack/react-table'
+import { ChevronDown } from 'lucide-react'
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -34,9 +31,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from '@/components/ui/table'
 
-export type Payment = {
+export type BomColumn = {
+  included: boolean
   id: number
   단위블록: string
   소조명: string
@@ -50,202 +48,125 @@ export type Payment = {
   가공계열: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<BomColumn>[] = [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={
           table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "단위블록",
-    header: "단위블록",
+    accessorKey: '단위블록',
+    header: '단위블록',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("단위블록")}</div>
+      <div className='capitalize'>{row.getValue('단위블록')}</div>
     ),
   },
   {
-    accessorKey: "소조명",
-    header: "소조명",
+    accessorKey: '소조명',
+    header: '소조명',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("소조명")}</div>
+      <div className='capitalize'>{row.getValue('소조명')}</div>
     ),
   },
   {
-    accessorKey: "부재명",
-    header: "부재명",
+    accessorKey: '부재명',
+    header: '부재명',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("부재명")}</div>
+      <div className='capitalize'>{row.getValue('부재명')}</div>
     ),
+    filterFn: 'includesString',
   },
   {
-    accessorKey: "P",
-    header: "P",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("P")}</div>
-    ),
+    accessorKey: 'P',
+    header: 'P',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('P')}</div>,
   },
   {
-    accessorKey: "S",
-    header: "S",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("S")}</div>
-    ),
+    accessorKey: 'S',
+    header: 'S',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('S')}</div>,
   },
   {
-    accessorKey: "재질",
-    header: "재질",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("재질")}</div>
-    ),
+    accessorKey: '재질',
+    header: '재질',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('재질')}</div>,
   },
   {
-    accessorKey: "중량",
-    header: "중량",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("중량")}</div>
-    ),
+    accessorKey: '중량',
+    header: '중량',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('중량')}</div>,
+    filterFn: (row, columnId, filterValue) => {
+      const value = row.getValue(columnId) as number
+      const filter = parseFloat(filterValue as string)
+      if (isNaN(filter)) return true
+      return value === filter
+    },
   },
   {
-    accessorKey: "두께",
-    header: "두께",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("두께")}</div>
-    ),
+    accessorKey: '두께',
+    header: '두께',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('두께')}</div>,
+    filterFn: (row, columnId, filterValue) => {
+      const value = row.getValue(columnId) as number
+      const filter = parseFloat(filterValue as string)
+      if (isNaN(filter)) return true
+      return value === filter
+    },
   },
   {
-    accessorKey: "송선",
-    header: "송선",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("송선")}</div>
-    ),
+    accessorKey: '송선',
+    header: '송선',
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('송선')}</div>,
   },
   {
-    accessorKey: "가공계열",
-    header: "가공계열",
+    accessorKey: '가공계열',
+    header: '가공계열',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("가공계열")}</div>
+      <div className='capitalize'>{row.getValue('가공계열')}</div>
     ),
   },
-  // {
-  //   accessorKey: "소조명",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         소조명
-  //         <ArrowUpDown />
-  //       </Button>
-  //     )
-  //   },
-  //   cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  // },
-  // {
-  //   accessorKey: "부재명",
-  //   header: () => <div className="text-right">Amount</div>,
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("부재명"))
-
-  //     // Format the amount as a dollar amount
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(amount)
-
-  //     return <div className="text-right font-medium">{formatted}</div>
-  //   },
-  // },
-  // {
-  //   id: "actions",
-  //   enableHiding: false,
-  //   cell: ({ row }) => {
-  //     const payment = row.original
-      
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(payment.id)}
-  //           >
-  //             Copy payment ID
-  //           </DropdownMenuItem>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem>View customer</DropdownMenuItem>
-  //           <DropdownMenuItem>View payment details</DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     )
-  //   },
-  // },
 ]
 
 export function DataTable() {
-  const [data, setData] = React.useState<Payment[]>([])
+  const [data, setData] = React.useState<BomColumn[]>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [error, setError] = React.useState<string | null>(null)
-  const [totalCount, setTotalCount] = React.useState<number>(0) // 전체 데이터 개수
-  const [totalPages, setTotalPages] = React.useState<number>(0) // 전체 페이지 수
-  const [currentPage, setCurrentPage] = React.useState<number>(1) // 현재 페이지
-
-  // Fetch data from the server
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('/api/bom') // API endpoint where data is fetched
-  //       if (response.ok) {
-  //         const result = await response.json()
-  //         setData(result) // assuming response contains an array of payments
-  //       } else {
-  //         console.error('Error fetching data')
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error)
-  //     }
-  //   }
-
-  //   fetchData()
-  // }, [])
+  const [totalCount, setTotalCount] = React.useState<number>(0)
+  const [totalPages, setTotalPages] = React.useState<number>(0)
+  const [currentPage, setCurrentPage] = React.useState<number>(1)
 
   React.useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetch(`/api/bom?page=${currentPage}`)
-
-        // 응답이 성공적인지 확인
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
 
         const result = await response.json()
-
         if (!result.data || result.data.length === 0) {
           setError('No data found')
           return
@@ -295,44 +216,79 @@ export function DataTable() {
   })
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className='w-full'>
+      <div className='space-y-4'>
+        <div className='border-b pb-4'>
+          <h2 className='text-xl font-semibold'>BOM Data 검색</h2>
+        </div>
+        {/* 검색 필터 영역 - 모바일에서는 세로로 정렬 */}
+        <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-4'>
+          <div className='flex flex-col w-full sm:w-auto gap-4 sm:flex-row'>
+            <Input
+              placeholder='부재명 필터'
+              value={
+                (table.getColumn('부재명')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn('부재명')?.setFilterValue(event.target.value)
+              }
+              className='w-full sm:max-w-[200px]'
+            />
+            <Input
+              placeholder='중량 필터'
+              type='number'
+              value={
+                (table.getColumn('중량')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn('중량')?.setFilterValue(event.target.value)
+              }
+              className='w-full sm:max-w-[200px]'
+            />
+            <Input
+              placeholder='두께 필터'
+              type='number'
+              value={
+                (table.getColumn('두께')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn('두께')?.setFilterValue(event.target.value)
+              }
+              className='w-full sm:max-w-[200px]'
+            />
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' className='w-full sm:w-auto'>
+                Columns <ChevronDown className='ml-2 h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end' className='w-[200px]'>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className='capitalize'
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-      <div className="rounded-md border">
+
+      {/* 테이블 영역 - 모바일에서는 가로 스크롤 */}
+      <div className='mt-4 overflow-x-auto rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -343,9 +299,9 @@ export function DataTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   )
                 })}
@@ -355,10 +311,7 @@ export function DataTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected()}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -373,7 +326,7 @@ export function DataTable() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
                   No results.
                 </TableCell>
@@ -382,38 +335,29 @@ export function DataTable() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+
+      {/* 페이지네이션 영역 - 모바일에서는 세로로 정렬 */}
+      <div className='flex flex-col sm:flex-row items-center justify-end gap-4 py-4'>
+        <div className='text-sm text-muted-foreground w-full sm:w-auto text-center sm:text-left'>
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
-          {/* <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+        <div className='flex items-center gap-2'>
+          <Button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className='w-[100px]'
           >
             Previous
           </Button>
+          <span className='mx-2'>{`Page ${currentPage} of ${totalPages}`}</span>
           <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className='w-[100px]'
           >
             Next
-          </Button> */}
-            <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              Previous
-            </Button>
-            <span className='mx-6'>{` Page ${currentPage} of ${totalPages} `}</span>
-            <Button
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </Button>
+          </Button>
         </div>
       </div>
     </div>

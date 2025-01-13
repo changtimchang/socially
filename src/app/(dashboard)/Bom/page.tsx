@@ -1,9 +1,6 @@
 'use client' // 클라이언트 사이드 코드로 실행하도록 지정
 
 import { DataTable } from '@/components/DataTable'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { SearchIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface BomData {
@@ -69,64 +66,8 @@ export default function Home() {
   }
 
   return (
-    
-    <div>
+    <div className='flex items-center justify-center mt-20'>
       <DataTable />
-      
-      {/* <h1>BOM 데이터</h1>
-      {error ? (
-        <p>{error}</p>
-      ) : (
-        <>
-          <table cellPadding='10'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>단위블록</th>
-                <th>소조명</th>
-                <th>부재명명</th>
-                <th>P</th>
-                <th>S</th>
-                <th>재질</th>
-                <th>중량</th>
-                <th>두께</th>
-                <th>송선</th>
-                <th>가공계열</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.id}</td>
-                  <td>{row.단위블록}</td>
-                  <td>{row.소조명}</td>
-                  <td>{row.부재명}</td>
-                  <td>{row.P}</td>
-                  <td>{row.S}</td>
-                  <td>{row.재질}</td>
-                  <td>{row.중량}</td>
-                  <td>{row.두께}</td>
-                  <td>{row.송선}</td>
-                  <td>{row.가공계열}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className='my-4'>
-            <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              Previous
-            </Button>
-            <span className='mx-6'>{` Page ${currentPage} of ${totalPages} `}</span>
-            <Button
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </Button>
-          </div>
-        </>
-      )} */}
     </div>
   )
 }
