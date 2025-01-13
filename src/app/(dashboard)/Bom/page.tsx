@@ -1,78 +1,84 @@
-'use client';  // 클라이언트 사이드 코드로 실행하도록 지정
+'use client' // 클라이언트 사이드 코드로 실행하도록 지정
 
-import { useEffect, useState } from 'react';
+import { DataTable } from '@/components/DataTable'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { SearchIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface BomData {
-  id: number;
-  단위블록: string;
-  소조명: string;
-  부재명: string;
-  P: number;
-  S: number;
-  재질: string;
-  중량: number;
-  두께: number;
-  송선: string;
-  가공계열: string;
+  id: number
+  단위블록: string
+  소조명: string
+  부재명: string
+  P: number
+  S: number
+  재질: string
+  중량: number
+  두께: number
+  송선: string
+  가공계열: string
 }
 
 export default function Home() {
-  const [data, setData] = useState<BomData[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [totalCount, setTotalCount] = useState<number>(0); // 전체 데이터 개수
-  const [totalPages, setTotalPages] = useState<number>(0); // 전체 페이지 수
-  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
-
+  const [data, setData] = useState<BomData[]>([])
+  const [error, setError] = useState<string | null>(null)
+  const [totalCount, setTotalCount] = useState<number>(0) // 전체 데이터 개수
+  const [totalPages, setTotalPages] = useState<number>(0) // 전체 페이지 수
+  const [currentPage, setCurrentPage] = useState<number>(1) // 현재 페이지
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/bom?page=${currentPage}`);
+        const response = await fetch(`/api/bom?page=${currentPage}`)
 
         // 응답이 성공적인지 확인
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`)
         }
 
-        const result = await response.json();
+        const result = await response.json()
 
         if (!result.data || result.data.length === 0) {
-          setError('No data found');
-          return;
+          setError('No data found')
+          return
         }
 
-        setData(result.data);
-        setTotalCount(result.totalCount);
-        setTotalPages(result.totalPages);
+        setData(result.data)
+        setTotalCount(result.totalCount)
+        setTotalPages(result.totalPages)
       } catch (error) {
-        console.error('Fetch error:', error);
-        setError('Failed to load data');
+        console.error('Fetch error:', error)
+        setError('Failed to load data')
       }
     }
 
-    fetchData();
-  }, [currentPage]);
+    fetchData()
+  }, [currentPage])
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPage(currentPage + 1)
     }
-  };
+  }
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage(currentPage - 1)
     }
-  };
+  }
 
   return (
+    
     <div>
-      <h1>BOM 데이터</h1>
+      <DataTable />
+      
+      {/* <h1>BOM 데이터</h1>
       {error ? (
         <p>{error}</p>
       ) : (
         <>
-          <table cellPadding="10">
+          <table cellPadding='10'>
             <thead>
               <tr>
                 <th>ID</th>
@@ -107,17 +113,20 @@ export default function Home() {
             </tbody>
           </table>
 
-          <div>
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          <div className='my-4'>
+            <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
               Previous
-            </button>
-            <span>{` Page ${currentPage} of ${totalPages} `}</span>
-            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+            </Button>
+            <span className='mx-6'>{` Page ${currentPage} of ${totalPages} `}</span>
+            <Button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
               Next
-            </button>
+            </Button>
           </div>
         </>
-      )}
+      )} */}
     </div>
-  );
+  )
 }
