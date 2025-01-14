@@ -23,14 +23,19 @@
     "pg": "^8.13.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-three-fiber": "^6.0.13",
+    "stl-loader": "^1.0.0",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.138.3",
+    "three-stl-loader": "^1.0.6"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "^0.172.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "postcss": "^8",
